@@ -15,6 +15,8 @@ import "./index.css";
 setConfig("resourceFetcher", frappeRequest);
 const emitter = mitt();
 const app = createApp(App);
+// Tiptap editor
+app.config.unwrapInjectedRef = true;
 app.config.globalProperties.emitter = emitter;
 app.use(router);
 app.use(store);
