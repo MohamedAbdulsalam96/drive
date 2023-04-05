@@ -1,0 +1,73 @@
+{
+  "actions": [],
+  "allow_rename": 1,
+  "creation": "2023-04-05 11:32:23.940763",
+  "default_view": "List",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "title",
+    "content",
+    "parent_drive_entity",
+    "path",
+    "trashed_on",
+    "parent_before_trash"
+  ],
+  "fields": [
+    {
+      "fieldname": "title",
+      "fieldtype": "Text",
+      "label": "Title"
+    },
+    {
+      "fieldname": "content",
+      "fieldtype": "JSON",
+      "label": "Content"
+    },
+    {
+      "fieldname": "parent_drive_entity",
+      "fieldtype": "Text",
+      "label": "Parent Drive Entity"
+    },
+    {
+      "fieldname": "path",
+      "fieldtype": "Data",
+      "label": "Path"
+    },
+    {
+      "fieldname": "trashed_on",
+      "fieldtype": "Date",
+      "label": "Trashed On"
+    },
+    {
+      "fieldname": "parent_before_trash",
+      "fieldtype": "Data",
+      "label": "Parent Before Trash"
+    }
+  ],
+  "index_web_pages_for_search": 1,
+  "links": [],
+  "modified": "2023-04-05 11:32:23.940763",
+  "modified_by": "Administrator",
+  "module": "Drive",
+  "name": "Drive Document",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "states": []
+}

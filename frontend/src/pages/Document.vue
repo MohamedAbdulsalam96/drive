@@ -1,10 +1,20 @@
 <template>
   <div class="flex justify-between items-center mb-4">
     <input
+      v-model="title"
       class="basis-3/4 border-0 bg-white text-3xl font-normal focus:outline-0"
       placeholder="Untitled Document" />
     <div>
-      <Button class="flex-none mr-1" appearance="primary" @click="test">
+      <Button
+        class="flex-none mr-1"
+        appearance="primary"
+        @click="
+          $resources.createDocument.submit({
+            title: title,
+            content: content,
+            parent: currentFolderID,
+          })
+        ">
         Save
       </Button>
       <Button @click="$router.go(-1)">Discard</Button>
@@ -28,6 +38,7 @@
 <script>
 import { Button } from "frappe-ui";
 import TextEditor from "@/components/DocEditor/TextEditor.vue";
+import { computed } from "@vue/reactivity";
 
 export default {
   components: {
@@ -37,15 +48,34 @@ export default {
   emits: ["uploadFile"],
   data() {
     return {
+      title: null,
       content: null,
     };
   },
-  methods: {
-    test() {
-      this.emitter.emit("uploadFile");
+  computed: {
+    currentFolderID() {
+      return this.$store.state.currentFolderID;
     },
   },
-  resources: {},
+  resources: {
+    createDocument() {
+      return {
+        url: "drive.api.documents.create_document",
+        params: {
+          title: this.title,
+          content: this.content,
+          parent: "",
+        },
+        onSuccess(data) {
+          console.log(data);
+        },
+        onError(data) {
+          console.log(data);
+        },
+        auto: false,
+      };
+    },
+  },
 };
 </script>
 
