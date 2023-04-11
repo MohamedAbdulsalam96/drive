@@ -25,6 +25,30 @@ def if_folder_exists(folder_name, parent):
         return existing_folder.name
 
 @frappe.whitelist()
+def create_document_entity(title, content, parent=None):
+    try:
+        user_directory = get_user_directory()
+    except FileNotFoundError:
+        user_directory = create_user_directory()
+
+    parent = frappe.form_dict.parent or user_directory.name
+    drive_doc_entity = frappe.new_doc('Drive Entity')
+    drive_doc_entity.title = title
+    drive_doc_entity.name = uuid.uuid4().hex
+    drive_doc_entity.parent_drive_entity = parent
+    drive_doc_entity.mime_type = "frappe_doc"
+    drive_doc_entity.append("document", {
+        'title': title,
+        'content': content,
+    })
+    drive_doc_entity.flags.file_created = True
+    frappe.local.rollback_observers.append(drive_doc_entity)
+    drive_doc_entity.save()
+    if parent == user_directory.name:
+                drive_doc_entity.share(frappe.session.user, write=1, share=1)
+    return drive_doc_entity
+
+@frappe.whitelist()
 def upload_file(fullpath=None, parent=None):
     """
     Accept chunked file contents via a multipart upload, store the file on
@@ -53,13 +77,6 @@ def upload_file(fullpath=None, parent=None):
         dirname = os.path.dirname(fullpath).split("/")
         for i in dirname:
             parent = if_folder_exists(i, parent)
-
-    # Todo
-    # Recursively create folders
-    # Memoize it? Maybe 15 nested levels and thats it? Lets see
-    # Error handling
-    # if not exisiting_folder/is_active:
-    # frappe.throw("Specified folder has been trashed by the owner or does not exist")
 
     if not frappe.has_permission(doctype='Drive Entity', doc=parent, ptype='write', user=frappe.session.user):
         frappe.throw(

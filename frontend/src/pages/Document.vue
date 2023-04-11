@@ -38,7 +38,6 @@
 <script>
 import { Button } from "frappe-ui";
 import TextEditor from "@/components/DocEditor/TextEditor.vue";
-import { computed } from "@vue/reactivity";
 
 export default {
   components: {
@@ -60,7 +59,7 @@ export default {
   resources: {
     createDocument() {
       return {
-        url: "drive.api.documents.create_document",
+        url: "drive.api.files.create_document_entity",
         params: {
           title: this.title,
           content: this.content,
